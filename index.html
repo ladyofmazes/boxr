@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Boxr</title>
+    <link rel="stylesheet" href="https://cdn.simplecss.org/simple-v1.css">
+    <style>
+      form {
+        display: grid;
+        grid-gap: 10px;
+        /* Adjusted width so the grid actually has room to show 3 columns */
+        width: 500px; 
+        grid-template-columns: 1fr 1fr 1fr;
+      }
+    
+      input[type=checkbox] {
+        display: none;
+      }
+    
+      /* 1. Make the label a 'container' for the images */
+      label {
+        position: relative;
+        display: block;
+        width: 100%;
+        aspect-ratio: 4 / 5; /* Matches your 200x300 image ratio */
+        cursor: pointer;
+      }
+    
+      /* 2. Stack images on top of each other */
+      label img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    
+      /* 3. Toggle visibility logic */
+      .img2 { visibility: hidden; }
+      .img1 { visibility: visible; }
+    
+      input[type=checkbox]:checked + label .img1 {
+        visibility: hidden;
+      }
+    
+      input[type=checkbox]:checked + label .img2 {
+        visibility: visible;
+      }
+    </style>
+
+</head>
+<body>
+    <header>
+        <h1>Boxr</h1>
+    </header>
+    
+    <main>
+      <form>
+        <input type="checkbox" id="btn1" />
+        <label for="btn1">
+          <img src="https://picsum.photos/id/210/200/300" class="img1" />
+          <img src="https://picsum.photos/200/300" class="img2" />
+        </label>
+      
+        <input type="checkbox" id="btn2" />
+        <label for="btn2">
+          <img src="https://picsum.photos/id/210/200/300" class="img1" />
+          <img src="https://picsum.photos/200/300" class="img2" />
+        </label>
+
+        <input type="checkbox" id="btn3" />
+        <label for="btn3">
+          <img src="https://picsum.photos/id/210/200/300" class="img1" />
+          <img src="https://picsum.photos/200/300" class="img2" />
+        </label>
+
+        <input type="checkbox" id="btn4" />
+        <label for="btn4">
+          <img src="https://picsum.photos/id/210/200/300" class="img1" />
+          <img src="https://picsum.photos/200/300" class="img2" />
+        </label>
+
+        <input type="checkbox" id="btn5" />
+        <label for="btn5">
+          <img src="https://picsum.photos/id/210/200/300" class="img1" />
+          <img src="https://picsum.photos/200/300" class="img2" />
+        </label>
+
+        <input type="checkbox" id="btn6" />
+        <label for="btn6">
+          <img src="https://picsum.photos/id/210/200/300" class="img1" />
+          <img src="https://picsum.photos/200/300" class="img2" />
+        </label>
+
+        <input type="checkbox" id="btn7" />
+        <label for="btn7">
+          <img src="https://picsum.photos/id/210/200/300" class="img1" />
+          <img src="https://picsum.photos/200/300" class="img2" />
+        </label>
+
+        <input type="checkbox" id="btn8" />
+        <label for="btn8">
+          <img src="https://picsum.photos/id/210/200/300" class="img1" />
+          <img src="https://picsum.photos/200/300" class="img2" />
+        </label>
+
+        <input type="checkbox" id="btn9" />
+        <label for="btn9">
+          <img src="https://picsum.photos/id/210/200/300" class="img1" />
+          <img src="https://picsum.photos/200/300" class="img2" />
+        </label>
+      </form>
+    </main>
+</body>
+</html>
