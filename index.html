@@ -6,6 +6,10 @@
     <title>Boxr</title>
     <link rel="stylesheet" href="https://cdn.simplecss.org/simple-v1.css">
     <style>
+      .container {
+        counter-reset: checked-count;
+      }
+
       form {
         display: grid;
         grid-gap: 10px;
@@ -40,13 +44,24 @@
       /* 3. Toggle visibility logic */
       .img2 { visibility: hidden; }
       .img1 { visibility: visible; }
-    
+
+      input[type=checkbox]:checked {
+        counter-increment: checked-count;
+      }      
+      
       input[type=checkbox]:checked + label .img1 {
         visibility: hidden;
       }
     
       input[type=checkbox]:checked + label .img2 {
         visibility: visible;
+      }
+
+      input:checked ~ input:checked ~ input + label .img2 {
+        visibility: hidden !important;
+      }
+      input:checked ~ input:checked ~ input + label .img1 {
+        visibility: visible !important;
       }
     </style>
 
