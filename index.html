@@ -34,47 +34,28 @@
       transition: opacity 0.2s;
     }
 
-    /* Card back: always on top until checked */
     .back  { z-index: 2; opacity: 1; }
     .front { z-index: 1; opacity: 0; }
 
-    /* Flip: show front, hide back */
-    input[type=checkbox]:checked + label .back  { opacity: 0; }
-    input[type=checkbox]:checked + label .front { opacity: 1; }
+    /* Flip a single card */
+    input:checked + label .back  { opacity: 0; }
+    input:checked + label .front { opacity: 1; }
 
-    /* ── Matched pairs: both checked → green outline ── */
+    /* Rule 1: if a THIRD pair has any checked card, flip it back */
+    .pair:has(input:checked) ~ .pair:has(input:checked) ~ .pair:has(input:checked) label .back  { opacity: 1 !important; }
+    .pair:has(input:checked) ~ .pair:has(input:checked) ~ .pair:has(input:checked) label .front { opacity: 0 !important; }
 
-    /* seed 5  — c1 + c2 */
-    #c1:checked ~ #c2:checked + label,
-    #c2:checked ~ * #c1:checked + label { outline: 4px solid green; }
-    #c1:checked ~ #c2:checked ~ * #c1:checked + label { outline: 4px solid green; }
+    /* Rule 2: if both cards in a pair are checked, hide the whole pair */
+    .pair:has(input:first-of-type:checked):has(input:last-of-type:checked) label {
+      visibility: hidden;
+    }
 
-    /* The trick: when BOTH are checked, target both labels.
-       We use the fact that checkboxes are siblings in the form. */
-
-    /* seed 5 */
-    #c1:checked ~ #c2:checked + label { outline: 4px solid green; }
-    #c2:checked ~ #c1 + label         { outline: 4px solid green; }
-    /* but #c2 comes after #c1 in DOM, so only forward sibling works cleanly.
-       We'll use a different approach: a wrapper div per pair + :has() */
+    .pair { display: contents; }
   </style>
 </head>
 <body>
   <header><h1>Boxr</h1></header>
   <main>
-    <!--
-      Strategy: wrap each PAIR in a div.pair.
-      When both checkboxes inside are :checked, :has() lets us
-      style the labels as matched — pure CSS, no JS.
-    -->
-    <style>
-      .pair { display: contents; } /* doesn't break the grid */
-
-      /* When BOTH checkboxes in a pair are checked → matched state */
-      .pair:has(input:nth-child(1):checked):has(input:nth-child(3):checked) label {
-        visibility: hidden;
-      }
-    </style>
     <form>
 
       <!-- PAIR: seed 5 -->
@@ -82,12 +63,12 @@
         <input type="checkbox" id="c1">
         <label for="c1" style="--rand:5">
           <img src="https://picsum.photos/id/210/200/300" class="back">
-          <img src="https://picsum.photos/seed/5/200/300"    class="front">
+          <img src="https://picsum.photos/seed/5/200/300" class="front">
         </label>
         <input type="checkbox" id="c2">
         <label for="c2" style="--rand:2">
           <img src="https://picsum.photos/id/210/200/300" class="back">
-          <img src="https://picsum.photos/seed/5/200/300"    class="front">
+          <img src="https://picsum.photos/seed/5/200/300" class="front">
         </label>
       </div>
 
@@ -96,12 +77,12 @@
         <input type="checkbox" id="c3">
         <label for="c3" style="--rand:8">
           <img src="https://picsum.photos/id/210/200/300" class="back">
-          <img src="https://picsum.photos/seed/10/200/300"   class="front">
+          <img src="https://picsum.photos/seed/10/200/300" class="front">
         </label>
         <input type="checkbox" id="c4">
         <label for="c4" style="--rand:9">
           <img src="https://picsum.photos/id/210/200/300" class="back">
-          <img src="https://picsum.photos/seed/10/200/300"   class="front">
+          <img src="https://picsum.photos/seed/10/200/300" class="front">
         </label>
       </div>
 
@@ -110,12 +91,12 @@
         <input type="checkbox" id="c5">
         <label for="c5" style="--rand:4">
           <img src="https://picsum.photos/id/210/200/300" class="back">
-          <img src="https://picsum.photos/seed/15/200/300"   class="front">
+          <img src="https://picsum.photos/seed/15/200/300" class="front">
         </label>
         <input type="checkbox" id="c6">
         <label for="c6" style="--rand:7">
           <img src="https://picsum.photos/id/210/200/300" class="back">
-          <img src="https://picsum.photos/seed/15/200/300"   class="front">
+          <img src="https://picsum.photos/seed/15/200/300" class="front">
         </label>
       </div>
 
@@ -124,12 +105,12 @@
         <input type="checkbox" id="c7">
         <label for="c7" style="--rand:12">
           <img src="https://picsum.photos/id/210/200/300" class="back">
-          <img src="https://picsum.photos/seed/20/200/300"   class="front">
+          <img src="https://picsum.photos/seed/20/200/300" class="front">
         </label>
         <input type="checkbox" id="c8">
         <label for="c8" style="--rand:6">
           <img src="https://picsum.photos/id/210/200/300" class="back">
-          <img src="https://picsum.photos/seed/20/200/300"   class="front">
+          <img src="https://picsum.photos/seed/20/200/300" class="front">
         </label>
       </div>
 
@@ -138,12 +119,12 @@
         <input type="checkbox" id="c9">
         <label for="c9" style="--rand:1">
           <img src="https://picsum.photos/id/210/200/300" class="back">
-          <img src="https://picsum.photos/seed/25/200/300"   class="front">
+          <img src="https://picsum.photos/seed/25/200/300" class="front">
         </label>
         <input type="checkbox" id="c10">
         <label for="c10" style="--rand:10">
           <img src="https://picsum.photos/id/210/200/300" class="back">
-          <img src="https://picsum.photos/seed/25/200/300"   class="front">
+          <img src="https://picsum.photos/seed/25/200/300" class="front">
         </label>
       </div>
 
@@ -152,12 +133,12 @@
         <input type="checkbox" id="c11">
         <label for="c11" style="--rand:11">
           <img src="https://picsum.photos/id/210/200/300" class="back">
-          <img src="https://picsum.photos/seed/30/200/300"   class="front">
+          <img src="https://picsum.photos/seed/30/200/300" class="front">
         </label>
         <input type="checkbox" id="c12">
         <label for="c12" style="--rand:3">
           <img src="https://picsum.photos/id/210/200/300" class="back">
-          <img src="https://picsum.photos/seed/30/200/300"   class="front">
+          <img src="https://picsum.photos/seed/30/200/300" class="front">
         </label>
       </div>
 
