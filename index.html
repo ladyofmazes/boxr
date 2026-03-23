@@ -33,13 +33,29 @@
       object-fit: cover;
       transition: opacity 0.2s;
     }
+    
+    /* Calculated timing for each frame (1s total / 10 frames) */
+    .gallery img:nth-child(2) { animation-delay: 0.00s; animation-name: shuffle; animation-duration: 1s; animation-iteration-count: infinite;}
+    .gallery img:nth-child(3) { animation-delay: 0.20s; animation-name: shuffle; animation-duration: 1s; animation-iteration-count: infinite;}
+    .gallery img:nth-child(4) { animation-delay: 0.40s; animation-name: shuffle; animation-duration: 1s; animation-iteration-count: infinite;}
+    .gallery img:nth-child(5) { animation-delay: 0.60s; animation-name: shuffle; animation-duration: 1s; animation-iteration-count: infinite;}
+    .gallery img:nth-child(6) { animation-delay: 0.80s; animation-name: shuffle; animation-duration: 1s; animation-iteration-count: infinite;}
+    
+    /* The Stop Logic */
+    form:has(input:checked) .gallery img { animation-play-state: paused; }
+
+    /* The visibility toggle (20% window for each of the 5 frames) */
+    @keyframes shuffle { 
+      0%, 20.0% { opacity: 1; } 
+      20.01%, 100% { opacity: 0; } 
+    }
 
     .back  { z-index: 2; opacity: 1; }
     .front { z-index: 1; opacity: 0; }
 
     /* Flip a single card */
     input:checked + label .back  { opacity: 0; }
-    input:checked + label .front { opacity: 1; }
+    /*input:checked + label .front { opacity: 1; }*/
 
     /* Rule 1: if a THIRD pair has any checked card, flip it back */
     .pair:has(input:checked) ~ .pair:has(input:checked) ~ .pair:has(input:checked) input:checked + label .back  { opacity: 1; }
@@ -62,13 +78,27 @@
       <div class="pair">
         <input type="checkbox" id="c1">
         <label for="c1" style="--rand:5">
+          <div class="gallery">
           <img src="https://picsum.photos/id/210/200/300" class="back">
+
           <img src="https://picsum.photos/seed/5/200/300" class="front">
+          <img src="https://picsum.photos/seed/55/200/300" class="front1">
+          <img src="https://picsum.photos/seed/105/200/300" class="front2">
+          <img src="https://picsum.photos/seed/155/200/300" class="front3">
+          <img src="https://picsum.photos/seed/205/200/300" class="front4">
+          </div>
         </label>
         <input type="checkbox" id="c2">
         <label for="c2" style="--rand:2">
+          <div class="gallery">
           <img src="https://picsum.photos/id/210/200/300" class="back">
+
           <img src="https://picsum.photos/seed/5/200/300" class="front">
+          <img src="https://picsum.photos/seed/55/200/300" class="front1">
+          <img src="https://picsum.photos/seed/105/200/300" class="front2">
+          <img src="https://picsum.photos/seed/155/200/300" class="front3">
+          <img src="https://picsum.photos/seed/205/200/300" class="front4">
+          </div>
         </label>
       </div>
 
