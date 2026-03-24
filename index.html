@@ -31,39 +31,39 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
-      transition: opacity 0.2s;
     }
-    
-    /* Calculated timing for each frame (1s total / 10 frames) */
+
+    /* Back is always visible by default */
+    .back { z-index: 2; opacity: 1; }
+
+    /* All front images hidden by default */
+    .gallery img:not(.back) { z-index: 1; opacity: 0; }
+
+    /* Animation makes each front briefly visible */
+    @keyframes shuffle {
+      0%, 20% { opacity: 1; }
+      20.01%, 100% { opacity: 0; }
+    }
+
     .gallery img:nth-child(2) { animation-delay: 0.00s; animation-name: shuffle; animation-duration: 1s; animation-iteration-count: infinite;}
     .gallery img:nth-child(3) { animation-delay: 0.20s; animation-name: shuffle; animation-duration: 1s; animation-iteration-count: infinite;}
     .gallery img:nth-child(4) { animation-delay: 0.40s; animation-name: shuffle; animation-duration: 1s; animation-iteration-count: infinite;}
     .gallery img:nth-child(5) { animation-delay: 0.60s; animation-name: shuffle; animation-duration: 1s; animation-iteration-count: infinite;}
     .gallery img:nth-child(6) { animation-delay: 0.80s; animation-name: shuffle; animation-duration: 1s; animation-iteration-count: infinite;}
-    
-    /* The Stop Logic */
+
+    /* On any click, pause all animations */
     form:has(input:checked) .gallery img { animation-play-state: paused; }
 
-    /* The visibility toggle (20% window for each of the 5 frames) */
-    @keyframes shuffle { 
-      0%, 20.0% { opacity: 1; } 
-      20.01%, 100% { opacity: 0; } 
-    }
-
-    .back  { z-index: 2; opacity: 1; }
-    .front { z-index: 1; opacity: 0; }
-
-    /* Flip a single card */
-    input:checked + label .back  { opacity: 0; }
-    /*input:checked + label .front { opacity: 1; }*/
+    /* On click, hide the back */
+    input:checked + label .back { opacity: 0; }
 
     /* Rule 1: if a THIRD pair has any checked card, flip it back */
-    .pair:has(input:checked) ~ .pair:has(input:checked) ~ .pair:has(input:checked) input:checked + label .back  { opacity: 1; }
-    .pair:has(input:checked) ~ .pair:has(input:checked) ~ .pair:has(input:checked) input:checked + label .front { opacity: 0; }
+    .pair:has(input:checked) ~ .pair:has(input:checked) ~ .pair:has(input:checked) input:checked + label .back { opacity: 1; }
+    .pair:has(input:checked) ~ .pair:has(input:checked) ~ .pair:has(input:checked) input:checked + label img:not(.back) { opacity: 0; }
 
     /* Rule 2: if both cards in a pair are checked, hide the whole pair */
     .pair:has(input:first-of-type:checked):has(input:last-of-type:checked) label {
-      visibility: hidden;
+      opacity: 0;
     }
 
     .pair { display: contents; }
@@ -79,25 +79,23 @@
         <input type="checkbox" id="c1">
         <label for="c1" style="--rand:5">
           <div class="gallery">
-          <img src="https://picsum.photos/id/210/200/300" class="back">
-
-          <img src="https://picsum.photos/seed/5/200/300" class="front">
-          <img src="https://picsum.photos/seed/55/200/300" class="front1">
-          <img src="https://picsum.photos/seed/105/200/300" class="front2">
-          <img src="https://picsum.photos/seed/155/200/300" class="front3">
-          <img src="https://picsum.photos/seed/205/200/300" class="front4">
+            <img src="https://picsum.photos/id/210/200/300" class="back">
+            <img src="https://picsum.photos/seed/5/200/300">
+            <img src="https://picsum.photos/seed/55/200/300">
+            <img src="https://picsum.photos/seed/105/200/300">
+            <img src="https://picsum.photos/seed/155/200/300">
+            <img src="https://picsum.photos/seed/205/200/300">
           </div>
         </label>
         <input type="checkbox" id="c2">
         <label for="c2" style="--rand:2">
           <div class="gallery">
-          <img src="https://picsum.photos/id/210/200/300" class="back">
-
-          <img src="https://picsum.photos/seed/5/200/300" class="front">
-          <img src="https://picsum.photos/seed/55/200/300" class="front1">
-          <img src="https://picsum.photos/seed/105/200/300" class="front2">
-          <img src="https://picsum.photos/seed/155/200/300" class="front3">
-          <img src="https://picsum.photos/seed/205/200/300" class="front4">
+            <img src="https://picsum.photos/id/210/200/300" class="back">
+            <img src="https://picsum.photos/seed/5/200/300">
+            <img src="https://picsum.photos/seed/55/200/300">
+            <img src="https://picsum.photos/seed/105/200/300">
+            <img src="https://picsum.photos/seed/155/200/300">
+            <img src="https://picsum.photos/seed/205/200/300">
           </div>
         </label>
       </div>
@@ -106,13 +104,25 @@
       <div class="pair">
         <input type="checkbox" id="c3">
         <label for="c3" style="--rand:8">
-          <img src="https://picsum.photos/id/210/200/300" class="back">
-          <img src="https://picsum.photos/seed/10/200/300" class="front">
+          <div class="gallery">
+            <img src="https://picsum.photos/id/210/200/300" class="back">
+            <img src="https://picsum.photos/seed/10/200/300">
+            <img src="https://picsum.photos/seed/60/200/300">
+            <img src="https://picsum.photos/seed/110/200/300">
+            <img src="https://picsum.photos/seed/160/200/300">
+            <img src="https://picsum.photos/seed/210/200/300">
+          </div>
         </label>
         <input type="checkbox" id="c4">
         <label for="c4" style="--rand:9">
-          <img src="https://picsum.photos/id/210/200/300" class="back">
-          <img src="https://picsum.photos/seed/10/200/300" class="front">
+          <div class="gallery">
+            <img src="https://picsum.photos/id/210/200/300" class="back">
+            <img src="https://picsum.photos/seed/10/200/300">
+            <img src="https://picsum.photos/seed/60/200/300">
+            <img src="https://picsum.photos/seed/110/200/300">
+            <img src="https://picsum.photos/seed/160/200/300">
+            <img src="https://picsum.photos/seed/210/200/300">
+          </div>
         </label>
       </div>
 
@@ -120,13 +130,25 @@
       <div class="pair">
         <input type="checkbox" id="c5">
         <label for="c5" style="--rand:4">
-          <img src="https://picsum.photos/id/210/200/300" class="back">
-          <img src="https://picsum.photos/seed/15/200/300" class="front">
+          <div class="gallery">
+            <img src="https://picsum.photos/id/210/200/300" class="back">
+            <img src="https://picsum.photos/seed/15/200/300">
+            <img src="https://picsum.photos/seed/65/200/300">
+            <img src="https://picsum.photos/seed/115/200/300">
+            <img src="https://picsum.photos/seed/165/200/300">
+            <img src="https://picsum.photos/seed/215/200/300">
+          </div>
         </label>
         <input type="checkbox" id="c6">
         <label for="c6" style="--rand:7">
-          <img src="https://picsum.photos/id/210/200/300" class="back">
-          <img src="https://picsum.photos/seed/15/200/300" class="front">
+          <div class="gallery">
+            <img src="https://picsum.photos/id/210/200/300" class="back">
+            <img src="https://picsum.photos/seed/15/200/300">
+            <img src="https://picsum.photos/seed/65/200/300">
+            <img src="https://picsum.photos/seed/115/200/300">
+            <img src="https://picsum.photos/seed/165/200/300">
+            <img src="https://picsum.photos/seed/215/200/300">
+          </div>
         </label>
       </div>
 
@@ -134,13 +156,25 @@
       <div class="pair">
         <input type="checkbox" id="c7">
         <label for="c7" style="--rand:12">
-          <img src="https://picsum.photos/id/210/200/300" class="back">
-          <img src="https://picsum.photos/seed/20/200/300" class="front">
+          <div class="gallery">
+            <img src="https://picsum.photos/id/210/200/300" class="back">
+            <img src="https://picsum.photos/seed/20/200/300">
+            <img src="https://picsum.photos/seed/70/200/300">
+            <img src="https://picsum.photos/seed/120/200/300">
+            <img src="https://picsum.photos/seed/170/200/300">
+            <img src="https://picsum.photos/seed/220/200/300">
+          </div>
         </label>
         <input type="checkbox" id="c8">
         <label for="c8" style="--rand:6">
-          <img src="https://picsum.photos/id/210/200/300" class="back">
-          <img src="https://picsum.photos/seed/20/200/300" class="front">
+          <div class="gallery">
+            <img src="https://picsum.photos/id/210/200/300" class="back">
+            <img src="https://picsum.photos/seed/20/200/300">
+            <img src="https://picsum.photos/seed/70/200/300">
+            <img src="https://picsum.photos/seed/120/200/300">
+            <img src="https://picsum.photos/seed/170/200/300">
+            <img src="https://picsum.photos/seed/220/200/300">
+          </div>
         </label>
       </div>
 
@@ -148,13 +182,25 @@
       <div class="pair">
         <input type="checkbox" id="c9">
         <label for="c9" style="--rand:1">
-          <img src="https://picsum.photos/id/210/200/300" class="back">
-          <img src="https://picsum.photos/seed/25/200/300" class="front">
+          <div class="gallery">
+            <img src="https://picsum.photos/id/210/200/300" class="back">
+            <img src="https://picsum.photos/seed/25/200/300">
+            <img src="https://picsum.photos/seed/75/200/300">
+            <img src="https://picsum.photos/seed/125/200/300">
+            <img src="https://picsum.photos/seed/175/200/300">
+            <img src="https://picsum.photos/seed/225/200/300">
+          </div>
         </label>
         <input type="checkbox" id="c10">
         <label for="c10" style="--rand:10">
-          <img src="https://picsum.photos/id/210/200/300" class="back">
-          <img src="https://picsum.photos/seed/25/200/300" class="front">
+          <div class="gallery">
+            <img src="https://picsum.photos/id/210/200/300" class="back">
+            <img src="https://picsum.photos/seed/25/200/300">
+            <img src="https://picsum.photos/seed/75/200/300">
+            <img src="https://picsum.photos/seed/125/200/300">
+            <img src="https://picsum.photos/seed/175/200/300">
+            <img src="https://picsum.photos/seed/225/200/300">
+          </div>
         </label>
       </div>
 
@@ -162,13 +208,25 @@
       <div class="pair">
         <input type="checkbox" id="c11">
         <label for="c11" style="--rand:11">
-          <img src="https://picsum.photos/id/210/200/300" class="back">
-          <img src="https://picsum.photos/seed/30/200/300" class="front">
+          <div class="gallery">
+            <img src="https://picsum.photos/id/210/200/300" class="back">
+            <img src="https://picsum.photos/seed/30/200/300">
+            <img src="https://picsum.photos/seed/80/200/300">
+            <img src="https://picsum.photos/seed/130/200/300">
+            <img src="https://picsum.photos/seed/180/200/300">
+            <img src="https://picsum.photos/seed/230/200/300">
+          </div>
         </label>
         <input type="checkbox" id="c12">
         <label for="c12" style="--rand:3">
-          <img src="https://picsum.photos/id/210/200/300" class="back">
-          <img src="https://picsum.photos/seed/30/200/300" class="front">
+          <div class="gallery">
+            <img src="https://picsum.photos/id/210/200/300" class="back">
+            <img src="https://picsum.photos/seed/30/200/300">
+            <img src="https://picsum.photos/seed/80/200/300">
+            <img src="https://picsum.photos/seed/130/200/300">
+            <img src="https://picsum.photos/seed/180/200/300">
+            <img src="https://picsum.photos/seed/230/200/300">
+          </div>
         </label>
       </div>
 
