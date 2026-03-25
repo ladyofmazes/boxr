@@ -5,11 +5,41 @@
   <title>Boxr</title>
   <link rel="stylesheet" href="https://cdn.simplecss.org/simple-v1.css">
   <style>
+    /* --- NEW START BUTTON LOGIC --- */
+    #start-btn { display: none; }
+    
+    .start-label {
+      position: absolute;
+      inset: 0;
+      z-index: 100;
+      cursor: pointer;
+      background: rgba(0,0,0,0.1); /* Slightly visible for testing, change to transparent later */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      color: white;
+      text-shadow: 1px 1px 5px black;
+    }
+
+    /* Pause the animation when checked */
+    #start-btn:checked ~ form .gallery img {
+      animation-play-state: paused;
+    }
+
+    /* Remove the button permanently when checked */
+    #start-btn:checked + .start-label {
+      display: none;
+      pointer-events: none;
+    }
+
+    /* --- YOUR ORIGINAL STYLES --- */
     form {
       display: grid;
       gap: 10px;
       width: 500px;
       grid-template-columns: 1fr 1fr 1fr 1fr;
+      position: relative; /* Needed for the absolute start button */
     }
 
     input[type=checkbox] { display: none; }
@@ -33,13 +63,12 @@
       object-fit: cover;
     }
 
-    /* Back is always visible by default */
     .back { z-index: 2; opacity: 1; }
+    .gallery img:not(.back) { 
+      z-index: 1; 
+      opacity: 0; 
+    }
 
-    /* All front images hidden by default */
-    .gallery img:not(.back) { z-index: 1; opacity: 0; }
-
-    /* Animation makes each front briefly visible */
     @keyframes shuffle {
       0%, 20% { opacity: 1; }
       20.01%, 100% { opacity: 0; }
@@ -51,33 +80,31 @@
     .gallery img:nth-child(5) { animation-delay: 0.60s; animation-name: shuffle; animation-duration: 1s; animation-iteration-count: infinite;}
     .gallery img:nth-child(6) { animation-delay: 0.80s; animation-name: shuffle; animation-duration: 1s; animation-iteration-count: infinite;}
 
-    /* On any click, pause all animations */
-    form:has(input:checked) .gallery img { animation-play-state: paused; }
-
-    /* On click, hide the back */
     input:checked + label .back { opacity: 0; }
 
-    /* Rule 1: if a THIRD pair has any checked card, flip it back */
     .pair:has(input:checked) ~ .pair:has(input:checked) ~ .pair:has(input:checked) input:checked + label .back { opacity: 1; }
     .pair:has(input:checked) ~ .pair:has(input:checked) ~ .pair:has(input:checked) input:checked + label img:not(.back) { opacity: 0; }
 
-    /* Rule 2: if both cards in a pair are checked, hide the whole pair */
     .pair:has(input:first-of-type:checked):has(input:last-of-type:checked) label {
       opacity: 0;
     }
 
     .pair { display: contents; }
+    main { position: relative; width: 500px; } /* Anchor for the start overlay */
   </style>
 </head>
 <body>
   <header><h1>Boxr</h1></header>
   <main>
-    <form>
+    <!-- NEW START BUTTON -->
+    <input type="checkbox" id="start-btn">
+    <label for="start-btn" class="start-label">Remove All Cards (Hint: Reverse)</label>
 
+    <form>
       <!-- PAIR: seed 5 -->
       <div class="pair">
         <input type="checkbox" id="c1">
-        <label for="c1" style="--rand:5">
+        <label for="c1" style="--rand:11">
           <div class="gallery">
             <img src="https://picsum.photos/id/210/200/300" class="back">
             <img src="https://picsum.photos/seed/5/200/300">
@@ -114,7 +141,7 @@
           </div>
         </label>
         <input type="checkbox" id="c4">
-        <label for="c4" style="--rand:9">
+        <label for="c4" style="--rand:14">
           <div class="gallery">
             <img src="https://picsum.photos/id/210/200/300" class="back">
             <img src="https://picsum.photos/seed/10/200/300">
@@ -151,11 +178,10 @@
           </div>
         </label>
       </div>
-
       <!-- PAIR: seed 20 -->
       <div class="pair">
         <input type="checkbox" id="c7">
-        <label for="c7" style="--rand:12">
+        <label for="c7" style="--rand:1">
           <div class="gallery">
             <img src="https://picsum.photos/id/210/200/300" class="back">
             <img src="https://picsum.photos/seed/20/200/300">
@@ -166,7 +192,7 @@
           </div>
         </label>
         <input type="checkbox" id="c8">
-        <label for="c8" style="--rand:6">
+        <label for="c8" style="--rand:5">
           <div class="gallery">
             <img src="https://picsum.photos/id/210/200/300" class="back">
             <img src="https://picsum.photos/seed/20/200/300">
@@ -177,11 +203,10 @@
           </div>
         </label>
       </div>
-
       <!-- PAIR: seed 25 -->
       <div class="pair">
         <input type="checkbox" id="c9">
-        <label for="c9" style="--rand:1">
+        <label for="c9" style="--rand:3">
           <div class="gallery">
             <img src="https://picsum.photos/id/210/200/300" class="back">
             <img src="https://picsum.photos/seed/25/200/300">
@@ -192,7 +217,7 @@
           </div>
         </label>
         <input type="checkbox" id="c10">
-        <label for="c10" style="--rand:10">
+        <label for="c10" style="--rand:12">
           <div class="gallery">
             <img src="https://picsum.photos/id/210/200/300" class="back">
             <img src="https://picsum.photos/seed/25/200/300">
@@ -203,11 +228,10 @@
           </div>
         </label>
       </div>
-
       <!-- PAIR: seed 30 -->
       <div class="pair">
         <input type="checkbox" id="c11">
-        <label for="c11" style="--rand:11">
+        <label for="c11" style="--rand:10">
           <div class="gallery">
             <img src="https://picsum.photos/id/210/200/300" class="back">
             <img src="https://picsum.photos/seed/30/200/300">
@@ -218,7 +242,7 @@
           </div>
         </label>
         <input type="checkbox" id="c12">
-        <label for="c12" style="--rand:3">
+        <label for="c12" style="--rand:6">
           <div class="gallery">
             <img src="https://picsum.photos/id/210/200/300" class="back">
             <img src="https://picsum.photos/seed/30/200/300">
@@ -229,7 +253,56 @@
           </div>
         </label>
       </div>
-
+      <!-- PAIR: seed 35 -->
+      <div class="pair">
+        <input type="checkbox" id="c13">
+        <label for="c13" style="--rand:13">
+          <div class="gallery">
+            <img src="https://picsum.photos/id/210/200/300" class="back">
+            <img src="https://picsum.photos/seed/35/200/300">
+            <img src="https://picsum.photos/seed/85/200/300">
+            <img src="https://picsum.photos/seed/135/200/300">
+            <img src="https://picsum.photos/seed/185/200/300">
+            <img src="https://picsum.photos/seed/235/200/300">
+          </div>
+        </label>
+        <input type="checkbox" id="c14">
+        <label for="c14" style="--rand:9">
+          <div class="gallery">
+            <img src="https://picsum.photos/id/210/200/300" class="back">
+            <img src="https://picsum.photos/seed/35/200/300">
+            <img src="https://picsum.photos/seed/85/200/300">
+            <img src="https://picsum.photos/seed/135/200/300">
+            <img src="https://picsum.photos/seed/185/200/300">
+            <img src="https://picsum.photos/seed/235/200/300">
+          </div>
+        </label>
+      </div>
+      <!-- PAIR: seed 40 -->
+      <div class="pair">
+        <input type="checkbox" id="c15">
+        <label for="c15" style="--rand:15">
+          <div class="gallery">
+            <img src="https://picsum.photos/id/210/200/300" class="back">
+            <img src="https://picsum.photos/seed/40/200/300">
+            <img src="https://picsum.photos/seed/90/200/300">
+            <img src="https://picsum.photos/seed/140/200/300">
+            <img src="https://picsum.photos/seed/190/200/300">
+            <img src="https://picsum.photos/seed/240/200/300">
+          </div>
+        </label>
+        <input type="checkbox" id="c16">
+        <label for="c16" style="--rand:16">
+          <div class="gallery">
+            <img src="https://picsum.photos/id/210/200/300" class="back">
+            <img src="https://picsum.photos/seed/40/200/300">
+            <img src="https://picsum.photos/seed/90/200/300">
+            <img src="https://picsum.photos/seed/140/200/300">
+            <img src="https://picsum.photos/seed/190/200/300">
+            <img src="https://picsum.photos/seed/240/200/300">
+          </div>
+        </label>
+      </div>
     </form>
   </main>
 </body>
